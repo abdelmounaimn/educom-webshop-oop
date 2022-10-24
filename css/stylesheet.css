@@ -1,0 +1,250 @@
+.body {
+  min-width: 412px;
+  margin: auto;
+  background-color: white;
+  color: rgb(35, 35, 35);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  padding: 0px;
+  
+}
+* {box-sizing: border-box}
+
+
+.navLijst {
+  text-align: center;
+  background-color: rgb(76, 75, 75);
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  border-color: rgb(64, 39, 39);
+}
+
+.navElement {
+  padding: 5px 10px;
+}
+.navElement a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  padding: 14px 16px;
+}
+.navElement a:hover {
+  background-color: rgb(161, 180, 255);
+  color: rgb(76, 75, 75);
+}
+.content {
+  border-style: solid;
+  border-width: 0px 10px;
+  border-color: rgb(76, 75, 75);
+  padding: 10px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  color: white;
+  background-color: rgb(76, 75, 75);
+  font-size: 10px;
+  margin: 0px;
+}
+.footer div{
+  margin : 5px;
+}
+
+.gegevensElement {
+  display: flex;
+  font-size: 16px;
+  color: black;;
+}
+.gegevensElement div{
+  flex: 50%;
+  padding: 10px;
+}
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+.messageArea{
+  width: 100%;
+  height: 80px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid gray;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+  font-size: 16px;
+  resize: none;
+}
+.submit {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.submit:hover {
+  opacity:1;
+}
+.container {
+  padding: 16px;
+}
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+.inputText {
+  width: 100%;
+  padding: 15px;
+  margin: 2px 0 2px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+.inputText:focus {
+  background-color: #ddd;
+  outline: none;
+}
+.errSapn {
+  color: red;
+  background-color: #eee;
+}
+.contact,.register{
+  margin: auto;
+  width: 70%;
+}
+.login{
+  margin: auto;
+  width: 360px;
+}
+form{
+  display: flex;
+  flex-direction: column;
+}
+
+/* shoppimg page */ 
+
+.shoppingPAge{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.productInShoppingPage {
+  text-decoration: none;
+  width: 310px;
+  border: 1px solid rgb(80, 79, 79);
+  border-radius: 4px;
+  background-color: rgb(215, 246, 247);
+  padding: 2px 5px;
+  margin: 5px;
+
+}
+.productInShoppingPage img{
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 300px;
+}
+
+.productInShoppingPage:hover {
+  box-shadow: 0 0 4px 2px rgba(0, 140, 186, 0.5);
+}
+.name{
+  font-size: 28px;
+  color: blue;
+}
+.description{
+font-size: 18px;
+color: black;
+
+}
+.price{
+  color: grey;
+  font-size: 22px;
+}
+
+.cartSplit{
+  width: 10px;
+  padding: 0px 20px;
+}
+.detailPageProduct{
+  text-decoration: none;
+  width: 60%;
+  border: 1px solid rgb(80, 79, 79);
+  border-radius: 4px;
+  background-color: rgb(215, 246, 247);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.detailPageProduct img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 40%;
+}
+
+.detailPageProduct .productDivShoppingPage:hover {
+  box-shadow: 0 0 4px 2px rgba(0, 140, 186, 0.5);
+}
+.cartButton{
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.cartButton:hover {
+  opacity: 0.7;
+}
+.cart{
+  display: flex;
+  flex-direction: column;
+}
+.cartElement{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+}
+.cartElement img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px;
+  width: 40px;
+}
+.cartElement .name{
+  font-size: 12px;
+  width: 200px;
+}
+.cartElement .price{
+  font-size: 14px;
+
+}
+
+.cartNbrOfItems{
+  width: 50px;
+  height: 25px;
+  border: 1px solid #ddd;
+  background: #f1f1f1;
+}
