@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+  <title>Border around content</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    #wrapper {
+      position: absolute;
+      overflow: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border: 5px solid red;
+    }
+  </style>
+  <!--[if IE 6]>
+  <style type="text/css">
+    #wrapper {
+      width: expression((m=document.documentElement.clientWidth-10)+'px');
+      height: expression((m=document.documentElement.clientHeight-10)+'px');
+    }
+  </style>
+  <![endif]-->
+</head>
+<body>
+  <div id="wrapper">
+    <!-- just a large div to get scrollbars -->
+    <div style="width: 9999px; height: 9999px; background: #ddd"></div>
+  </div>
+</body>
+</html>
