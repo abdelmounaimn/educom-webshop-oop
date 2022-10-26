@@ -1,6 +1,22 @@
 <?php
 
+include_once "./controllers/PageControllerClass.php";
+$ctrl = new PageControllerClass();
+
+$data = array(
+    'page' => 'about',
+    'bodyHeader' => 'About',
+    'menu' => array('home' => 'index.php/page=home', 'contact' => 'index.php/page=contact'),
+    'user'=> array('name'=>'Abdel', 'email'=>'abdel@nejjari.com')
+);
+
+$view = new AboutDoc($data);
+$view->show();
+
+
+/*
 session_start();
+
 include("./include.php");
 
 $requested_page = getRequestedPage();
@@ -40,12 +56,7 @@ function getUrlVar($key, $default = 'other')
     //return  $nbrArgs == 1 ? filter_input(INPUT_GET, $key) :  $default;
 }
 
-/**
- * 
- * 
- * processRequest($requested_page)
- * 
- */
+
 function processRequest($requested_page)
 {
     switch ($requested_page) {
@@ -88,11 +99,7 @@ function processRequest($requested_page)
     return $data;
 }
 
-/**
- * 
- * showResponsePage
- * 
- */
+
 
 function showResponsePage($data)
 {
@@ -133,3 +140,5 @@ function showResponsePage($data)
             echo $data['page'] . ' URL is niet geldig';
     }
 }
+
+*/
