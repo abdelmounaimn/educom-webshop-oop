@@ -3,51 +3,53 @@ require_once 'BasicDoc.php';
 
 class FormsDoc extends BasicDoc
 {
-    public function __construct($myData)
+    public function __construct($model)
     {
-        parent::__construct($myData);
+        //$this->model = $myData;
+        parent::__construct($model);
     }
 
     protected function mainContent()
     {
-        return $this->buildFormElements($this->data);
+        return $this->buildFormElements($this->model->getFormModel());
     }
 
-    function buildFormElements($data)
+    function buildFormElements($model)
     {
-        $header = h1($data['formHeader']) . p($data['formDescription']) . hr();
-        $formElements = '';
-        foreach ($data['formFields'] as $key) {
-            $field = $data[$key];
 
+        $header = h1($model->getFormHeader()) . p($model->getFormDescription()) . hr();
+        $formElements = '';
+        foreach ($model->getFormFields() as $key) {
+
+            $field = $key;
             $spn = span('errSapn', $field['error']);
             $formElement = '';
             switch ($field['type']) {
                 case 'select':
-                    $formElement .= select(name: $key, value: $field['value'], class: 'inputText', required: 'required', options: $field['options']);
+                    $formElement .= select(name: $field['name'], value: $field['value'], class: 'inputText', required: 'required', options: $field['options']);
                     break;
                 case 'radio':
                     foreach ($field['options'] as $opt => $val) {
-                        $optId = $key . '_' . $opt;
-                        $rad = input('radio', $optId, value: $opt, name: $key, class: '', content: $val, checked: ($field['value'] == $opt));
+                        $optId = $field['name'] . '_' . $opt;
+                        $rad = input('radio', $optId, value: $opt, name: $field['name'], class: '', content: $val, checked: ($field['value'] == $opt));
                         $formElement .= label($optId, content: $rad);
                     }
                     break;
                 case 'textarea':
-                    $formElement .= textarea(class: 'messageArea', id: $key, name: $key, message: $field['value']);
+                    $formElement .= textarea(class: 'messageArea', id: $field['name'], name: $field['name'], message: $field['value']);
                     break;
                 default:
-                    $formElement .= input(type: $field['type'], id: $key, value: $field['value'], name: $key, checked: false, class: 'inputText', placeholder: $field['label']);
+                    $formElement .= input(type: $field['type'], id:$field['name'], value: $field['value'], name: $field['name'], checked: false, class: 'inputText', placeholder: $field['label']);
                     break;
             }
-            $formElements .= label($key, content: $field['label'] .  ' ' . $spn . $formElement);
+            $formElements .= label($field['name'], content: $field['label'] .  ' ' . $spn . $formElement);
         }
 
 
-        $hiddenELement = input(type: 'hidden', id: 'page', value: $data['page'], name: 'page');
-        $submitButton = input(type: 'submit',  value: $data['formButton'],  class: 'submit clearfix');
+        $hiddenELement = input(type: 'hidden', id: 'page', value: $model->getPage(), name: 'page');
+        $submitButton = input(type: 'submit',  value: $model->getFormButton(),  class: 'submit clearfix');
         $form = form(id: '', action: 'index.php', method: 'POST', content: $formElements . $hiddenELement . $submitButton);
-        $formpage = div($class = $data['page'], $content = $header . $form);
+        $formpage = div($class = $model->getPage(), $content = $header . $form);
 
         return $formpage;
     }

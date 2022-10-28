@@ -1,17 +1,10 @@
 <?php
 
-include_once "./controllers/PageControllerClass.php";
+session_start();
+require_once("controllers/PageControllerClass.php");
 $ctrl = new PageControllerClass();
+$ctrl-> handleRequest();
 
-$data = array(
-    'page' => 'about',
-    'bodyHeader' => 'About',
-    'menu' => array('home' => 'index.php/page=home', 'contact' => 'index.php/page=contact'),
-    'user'=> array('name'=>'Abdel', 'email'=>'abdel@nejjari.com')
-);
-
-$view = new AboutDoc($data);
-$view->show();
 
 
 /*

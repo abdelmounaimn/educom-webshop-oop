@@ -1,17 +1,22 @@
 <?php
 require_once 'HtmlDoc.php';
+require_once 'models/PageModelClass.php';
+include_once("sessionManager/SessionManager.php");
 class BasicDoc extends HtmlDoc
 {
-    protected $data;
+    protected $model;
+    
 
-    public function __construct($myData)
+    public function __construct($model)
     {
-        $this->data = $myData;
+        
+        $this->model= $model;
+        
     }
 
     protected function title()
     {
-        return title(content: $this->data['page']);
+        return title(content: $this->model->getPage());
     }
 
     private function metaAuthor()
@@ -21,18 +26,20 @@ class BasicDoc extends HtmlDoc
 
     private   function cssLinks()
     {
-        return h_link(rel: 'stylesheet', href: './../css/stylesheet.css');
+        return h_link(rel: 'stylesheet', href: '/educom-webshop-oop/css/stylesheet.css');
     }
 
     private   function bodyHeader()
     {
-        return h1($this->data['bodyHeader']);
+        return h1($this->model->getBodyHeader());
     }
 
     private   function mainMenu()
     {
-        $elemnts = '';
-        foreach ($this->data['menu'] as $menu => $href) {
+    
+        $elemnts='' ;
+        $menu =$this->model-> getMenu();
+        foreach ($menu as $menu => $href) {
             $elemnts .= li(class: 'navElement', content: a(href: $href, content: $menu, class: ''));
         }
         return ul(class: 'navLijst', content: $elemnts);
@@ -59,6 +66,6 @@ class BasicDoc extends HtmlDoc
     {
         return div(class: 'bodyContent', content: $this->mainMenu() .
             div(class: 'content', content: $this->bodyHeader() .
-                $this->mainContent()) . $this->bodyFooter());
+                $this->mainContent()). $this->bodyFooter());
     }
 }

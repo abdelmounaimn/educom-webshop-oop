@@ -36,7 +36,8 @@ function showBodyHeader()
   <li class="navElement"><a href="./index.php?page=webshop"> WEBSHOP</a></li>
   <li class="navElement"><a href="./index.php?page=logout"> LOGOUT</a></li>
   <li class="navElement"><a href="./index.php?page=cart"> CART</a></li>';
-  $extra_elements_if_user_logged_out = '<li class="navElement"><a href="./index.php?page=register"> REGISTER</a></li>
+  $extra_elements_if_user_logged_out = '
+  <li class="navElement"><a href="./index.php?page=register"> REGISTER</a></li>
   <li class="navElement"><a href="./index.php?page=login"> LOGIN</a></li>';
    $extra_elements= is_user_logged_in() ? $extra_elements_if_user_logged_in : $extra_elements_if_user_logged_out;
   $return_str = '

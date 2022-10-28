@@ -1,6 +1,6 @@
 <?php 
     require_once 'BasicDoc.php';
-   
+
     class HomeDoc extends BasicDoc 
     { 
         public function __construct($myData)
@@ -11,7 +11,9 @@
         // Override function from basicDoc
         protected function mainContent() 
         {
-           return "<p>dit is homepage</p>"; 
+            
+           return "<p>Welkom <strong> " . ($this->model->getSessionManager()->isUserLoggedIn()?$this->model->getSessionManager()->getLoggedUserName():'') . 
+            " </strong>in de home pagina </p>"; 
         }
     }
 ?>

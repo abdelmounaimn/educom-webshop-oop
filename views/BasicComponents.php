@@ -103,3 +103,8 @@ function meta($name, $content)
 {
     return '<meta name= "' . $name . '" content="' . $content . '">';
 }
+
+function er($txt){
+    return div(class: 'er' , content:(String)$txt);
+    
+}
