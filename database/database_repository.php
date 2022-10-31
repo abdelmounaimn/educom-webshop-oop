@@ -17,11 +17,11 @@ function saveUser($user)
     $conn = database_connect();
     try {
 
-        $name = mysqli_real_escape_string($conn, $user['naam']);
+        $name = mysqli_real_escape_string($conn, $user['name']);
         $email = mysqli_real_escape_string($conn, $user['email']);
-        $wachtwoord = mysqli_real_escape_string($conn, $user['wachtwoord']);
+        $password = mysqli_real_escape_string($conn, $user['password']);
         $sql = "INSERT INTO users (name, email, password) 
-        VALUE ('" . $name . "', '" . $email . "','" . $wachtwoord . "')";
+        VALUE ('" . $name . "', '" . $email . "','" . $password . "')";
         if (!mysqli_query($conn, $sql)) throw new Exception("user not Found");
     } finally {
         database_disconnect($conn);

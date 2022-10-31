@@ -11,7 +11,8 @@ class FormsDoc extends BasicDoc
 
     protected function mainContent()
     {
-        return $this->buildFormElements($this->model->getFormModel());
+        //var_dump($this->model);
+        return $this->buildFormElements($this->model);
     }
 
     function buildFormElements($model)
@@ -20,7 +21,7 @@ class FormsDoc extends BasicDoc
         $header = h1($model->getFormHeader()) . p($model->getFormDescription()) . hr();
         $formElements = '';
         foreach ($model->getFormFields() as $key) {
-
+            //var_dump($key);
             $field = $key;
             $spn = span('errSapn', $field['error']);
             $formElement = '';
@@ -39,7 +40,7 @@ class FormsDoc extends BasicDoc
                     $formElement .= textarea(class: 'messageArea', id: $field['name'], name: $field['name'], message: $field['value']);
                     break;
                 default:
-                    $formElement .= input(type: $field['type'], id:$field['name'], value: $field['value'], name: $field['name'], checked: false, class: 'inputText', placeholder: $field['label']);
+                    $formElement .= input(type: $field['type'], id: $field['name'], value: $field['value'], name: $field['name'], checked: false, class: 'inputText', placeholder: $field['label']);
                     break;
             }
             $formElements .= label($field['name'], content: $field['label'] .  ' ' . $spn . $formElement);

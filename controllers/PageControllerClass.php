@@ -36,19 +36,32 @@ class PageControllerClass
                     $this->model->doLoginUser();
                     $this->model->createMenu();
                     $this->model->setPage("home");
-                } 
+                }
                 break;
             case 'logout':
                 $this->model->getSessionManager()->do_user_logout();
                 $this->model->createMenu();
                 break;
-                /*
-            case 'contact':
-                $data = validateContact();
-                if ($data['validForm']) {
-                    $requested_page = 'thinks';
+            case 'about':
+                if ($this->model->getSessionManager()->isUserLoggedIn()) {
+                    include_once "models/UserModelClass.php";
+                    $this->model = new UserModelClass($this->model);
+                    $user = $this->model->getSessionManager()->getLoggedUser();
+                    $this->model->setNameVal($user['name']);
+                    $this->model->setEmailVal($user['email']);
+                } else $this->model->setPage("home");
+                break;
+
+            case 'register':
+                include_once "models/UserModelClass.php";
+                $this->model = new UserModelClass($this->model);
+                $this->model->validateRegister();
+                if ($this->model->getIsValid()) {
+                    $this->model = new UserModelClass($this->model);
+                    $this->model->setPage("login");
                 }
                 break;
+                /*
             case 'register':
                 $data = validateRegister();
                 if ($data['validForm']) {
@@ -97,10 +110,14 @@ class PageControllerClass
                 require_once "views/FormsDoc.php";
                 $view = new FormsDoc($this->model);
                 break;
-                case "about":
-                    require_once "views/AboutDoc.php";
-                    $view = new AboutDoc($this->model);
-                    break;
+            case "about":
+                require_once "views/AboutDoc.php";
+                $view = new AboutDoc($this->model);
+                break;
+            case 'register':
+                require_once "views/FormsDoc.php";
+                $view = new FormsDoc($this->model);
+                break;
             default:
                 require_once "views/HomeDoc.php";
                 $view = new HomeDoc($this->model);
