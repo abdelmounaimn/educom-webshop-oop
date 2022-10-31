@@ -57,18 +57,21 @@ class PageControllerClass
                 $this->model = new UserModelClass($this->model);
                 $this->model->validateRegister();
                 if ($this->model->getIsValid()) {
-                    $this->model = new UserModelClass($this->model);
+                    $this->model->setFormFields(array($this->model->getEmail(), $this->model->getPassword()));
                     $this->model->setPage("login");
                 }
                 break;
-                /*
-            case 'register':
-                $data = validateRegister();
-                if ($data['validForm']) {
-                    $data = validateLogin();
-                    $requested_page = 'login';
+
+            case 'contact':
+                include_once "models/FormModel.php";
+                $this->model = new FormModel($this->model);
+                $this->model->validateContact();
+                if ($this->model->getIsValid()) {
+                    $this->model->setPage("thinks");
                 }
                 break;
+
+                /*
             case 'login':
                 $this->model = new UserModel($this->model);
                 $model->validateLogin();
@@ -118,6 +121,16 @@ class PageControllerClass
                 require_once "views/FormsDoc.php";
                 $view = new FormsDoc($this->model);
                 break;
+            case 'contact':
+                require_once "views/FormsDoc.php";
+
+                $view = new FormsDoc($this->model);
+                break;
+                case 'thinks':
+                    require_once "views/ThinksDoc.php";
+    
+                    $view = new ThinksDoc($this->model);
+                    break;
             default:
                 require_once "views/HomeDoc.php";
                 $view = new HomeDoc($this->model);

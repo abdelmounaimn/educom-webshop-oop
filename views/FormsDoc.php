@@ -17,6 +17,7 @@ class FormsDoc extends BasicDoc
 
     function buildFormElements($model)
     {
+      
 
         $header = h1($model->getFormHeader()) . p($model->getFormDescription()) . hr();
         $formElements = '';
