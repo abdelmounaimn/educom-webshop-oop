@@ -12,7 +12,6 @@ class HtmlDoc
     }
     private function htmlContent()
     {
-
         return html(head(content: $this->headContent()) . body(content: $this->bodyContent(), class: 'body'));
     }
     public function show()

@@ -18,11 +18,3 @@ function getProductById($id)
         echo $e->getMessage();
     }
 }
-function addPaymentService($userId, $cartItems, $totalPrice)
-{
-    try {
-        return addPaymentToDatabase($userId, $cartItems, $totalPrice);
-    } catch (Exception $e) {
-        echo $e->getMessage();
-    }
-}

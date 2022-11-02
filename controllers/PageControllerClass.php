@@ -1,15 +1,13 @@
 <?php
 require_once("models/PageModelClass.php");
-
+require_once "utils/Utils.php";
 class PageControllerClass
 {
     protected $model;
     public function __construct()
     {
-
         $this->model = new PageModelClass(NULL);
     }
-
 
     public function handleRequest()
     {
@@ -25,6 +23,7 @@ class PageControllerClass
 
         $this->model->getRequestedPage();
     }
+
     private function processRequest()
     {
         switch ($this->model->getPage()) {
@@ -51,7 +50,6 @@ class PageControllerClass
                     $this->model->setEmailVal($user['email']);
                 } else $this->model->setPage("home");
                 break;
-
             case 'register':
                 include_once "models/UserModelClass.php";
                 $this->model = new UserModelClass($this->model);
@@ -61,7 +59,6 @@ class PageControllerClass
                     $this->model->setPage("login");
                 }
                 break;
-
             case 'contact':
                 include_once "models/FormModel.php";
                 $this->model = new FormModel($this->model);
@@ -70,41 +67,28 @@ class PageControllerClass
                     $this->model->setPage("thinks");
                 }
                 break;
-
-                /*
-            case 'login':
-                $this->model = new UserModel($this->model);
-                $model->validateLogin();
-                if ($model->valid) {
-                    $this->model->doLoginUser();
-
-                    $this->model->setPage("home");
-                }
-                break;
-            case 'logout':
-                do_user_logout();
-                $requested_page = 'home';
-                break;
-            case 'detail':
-                $data['productId'] = getUrlVar('id', "");
+            case 'webshop':
+                include_once "models/ShopModel.php";
+                $this->model = new ShopModel($this->model);
+                $this->model->getProductsFromDb();
                 break;
             case 'cart':
-                $data = validateCart();
-                $requested_page = $data['page'];
+                $page = Util::validateCart();
                 break;
-            case 'payment':
-                $data = validatPayment();
-                $requested_page = $data['page'];
+            case 'detail':
+                $id = Util::addElementToCart();
+                include_once "models/ShopModel.php";
+                $this->model = new ShopModel($this->model);
+                $this->model->getProductById($id);
                 break;
-                */
         }
     }
+
     private function showResponse()
     {
         $this->model->createMenu();
         $view = null;
         switch ($this->model->getPage()) {
-
             case "home":
                 require_once "views/HomeDoc.php";
                 $view = new HomeDoc($this->model);
@@ -123,22 +107,30 @@ class PageControllerClass
                 break;
             case 'contact':
                 require_once "views/FormsDoc.php";
-
                 $view = new FormsDoc($this->model);
                 break;
-                case 'thinks':
-                    require_once "views/ThinksDoc.php";
-    
-                    $view = new ThinksDoc($this->model);
-                    break;
+            case 'thinks':
+                require_once "views/ThinksDoc.php";
+                $view = new ThinksDoc($this->model);
+                break;
+            case 'webshop':
+                require_once "views/WebshopDoc.php";
+                $view = new WebshopDoc($this->model);
+                break;
+            case 'detail':
+                require_once "views/ProductDetailDoc.php";
+                $view = new ProductDetailDoc($this->model);
+                break;
+            case 'cart':
+                require_once "views/CartDoc.php";
+                $view = new CartDoc($this->model);
+                break;
+            case 'payment':
+
             default:
                 require_once "views/HomeDoc.php";
                 $view = new HomeDoc($this->model);
         }
-
-
-
-
         $view->show();
     }
 }

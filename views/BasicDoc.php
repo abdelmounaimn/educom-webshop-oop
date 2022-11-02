@@ -5,13 +5,9 @@ include_once("sessionManager/SessionManager.php");
 class BasicDoc extends HtmlDoc
 {
     protected $model;
-    
-
     public function __construct($model)
     {
-        
-        $this->model= $model;
-        
+        $this->model = $model;
     }
 
     protected function title()
@@ -36,9 +32,8 @@ class BasicDoc extends HtmlDoc
 
     private   function mainMenu()
     {
-    
-        $elemnts='' ;
-        $menu =$this->model-> getMenu();
+        $elemnts = '';
+        $menu = $this->model->getMenu();
         foreach ($menu as $menu => $href) {
             $elemnts .= li(class: 'navElement', content: a(href: $href, content: $menu, class: ''));
         }
@@ -46,14 +41,12 @@ class BasicDoc extends HtmlDoc
     }
     protected function mainContent()
     {
-
     }
     private   function bodyFooter()
     {
         return div(class: 'footer', content: div(content: '&nbsp; &copy; 2022, Abdel', class: ''));
     }
 
-    // Override function from htmlDoc
     protected function headContent()
     {
         return $this->title() .
@@ -61,11 +54,10 @@ class BasicDoc extends HtmlDoc
             $this->cssLinks();
     }
 
-    // Override function from htmlDoc
     protected function bodyContent()
     {
         return div(class: 'bodyContent', content: $this->mainMenu() .
             div(class: 'content', content: $this->bodyHeader() .
-                $this->mainContent()). $this->bodyFooter());
+                $this->mainContent()) . $this->bodyFooter());
     }
 }

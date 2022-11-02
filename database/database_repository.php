@@ -16,7 +16,6 @@ function saveUser($user)
 {
     $conn = database_connect();
     try {
-
         $name = mysqli_real_escape_string($conn, $user['name']);
         $email = mysqli_real_escape_string($conn, $user['email']);
         $password = mysqli_real_escape_string($conn, $user['password']);
@@ -73,22 +72,20 @@ function findProductById($id)
     }
 }
 
-function addPaymentToDatabase($user_id, $cartItems, $totalPrice)
+function savePyemnt($payment)
 {
     $conn = database_connect();
     try {
         if (!$conn) throw new Exception("connection faild");
-        $sql = "INSERT INTO carts ( user_id)VALUE ('" . $user_id . "')";
+        $sql = "INSERT INTO carts ( user_id)VALUE ('" . $payment->getUserId() . "')";
         if (!mysqli_query($conn, $sql)) throw new Exception("Cart can t inserted");
-
         $cart_id = mysqli_insert_id($conn);
-        foreach ($cartItems as $item) {
-            $nbrOfItems = mysqli_real_escape_string($conn, $item['nbrOfItems']);
-            $sql = "INSERT INTO cart_items (cart_id , nbr_items , product_id)VALUE ('" . $cart_id . "', '" . $nbrOfItems . "','" . $item['id'] . "')";
+        foreach ($payment->getCart()->getCartItem() as $item) {
+            $nbrOfItems = mysqli_real_escape_string($conn, $item->getNbrElement());
+            $sql = "INSERT INTO cart_items (cart_id , nbr_items , product_id)VALUE ('" . $cart_id . "', '" . $nbrOfItems . "','" . $item->getProduct()->getId() . "')";
             if (!mysqli_query($conn, $sql)) throw new Exception("Cart Item Insert ERROR : " . $sql);
         }
-
-        $sql = "INSERT INTO payments ( cart_id , total_price , checkout)VALUE ('" . $cart_id . "', '" . $totalPrice . "','" . 0 . "')";
+        $sql = "INSERT INTO payments ( cart_id , total_price , checkout)VALUE ('" . $cart_id . "', '" . $payment->getTotalPrice() . "','" . 0 . "')";
         if (!mysqli_query($conn, $sql)) throw new Exception("Payment can t inserted");
         return mysqli_insert_id($conn);
     } finally {

@@ -3,15 +3,15 @@ require_once 'ProductDoc.php';
 
 class WebshopDoc extends ProductDoc
 {
-    public function __construct($myData)
+    public function __construct($model)
     {
-        parent::__construct($myData);
+        parent::__construct($model);
     }
 
     protected function mainContent()
     {
         $form = '';
-        return $this->showProducten($this->data['products'], $form);
+        return $this->showProducten($this->model->getProducts(), $form);
     }
 
     private function showProducten($ps,$form)
@@ -19,20 +19,20 @@ class WebshopDoc extends ProductDoc
         $content = '';
         for ($i = 0; $i < sizeof($ps); $i++) {
             $p = $ps[$i];
-            $content.=$this->sowProductCntainer($p, $form);
+            $content.=$this->sowProductCntainer($p, $form,0);
         }
             return div(class: 'webshop',content: $content);
         
     }
     protected function sowProductCntainer($p, $form)
     {
-        $id = $p['product_id'];
-        $name = $p['name'];
-        $description = $p['description'];
-        $src = $p['filename'];
-        $price = $p['price'];
+        $id = $p->getId();
+        $name = $p->getName();        
+        $description = $p->getDescription();
+        $src = $p->getFileName();;
+        $price = $p->getPrice();
         $class = 'productInShoppingPage';
-        $url = "index.php?page=detail&id=" . $p['product_id'];
+        $url = "index.php?page=detail&id=" . $p->getId();
         return a(href: $url,class: $class, content: $this->showProduct($id, $name, $description, $src, $price) . $form);
     }
 

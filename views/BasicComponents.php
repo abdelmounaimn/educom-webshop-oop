@@ -5,26 +5,30 @@ function html($head = '', $body = '')
         '</head> <body>' . $body .
         '</body> <html>';
 }
-function head($content){
-    return '<head >' . $content .' </head>';
-
+function head($content)
+{
+    return '<head >' . $content . ' </head>';
 }
-function h_link($rel , $href){
+function h_link($rel, $href)
+{
     return '<link rel="' . $rel . '" href="' . $href . '" >';
 }
-function title($content){
-    return '<title >' . $content .' </title>';
+function title($content)
+{
+    return '<title >' . $content . ' </title>';
 }
-function script($content , $src){
-    return '<script  src = "' . $src . '">' . $content .' </script>';
+function script($content, $src)
+{
+    return '<script  src = "' . $src . '">' . $content . ' </script>';
 }
-function body($content, $class){
-    return  '<body class="' . $class . '" >' . $content .' </body>';
+function body($content, $class)
+{
+    return  '<body class="' . $class . '" >' . $content . ' </body>';
 }
 
 function input($type = 'text', $id = '', $value = '', $name = '', $class = '', $content = '', $checked = false, $placeholder = '', $min = null, $max = null)
 {
-    return '<input type="' . $type . '" ' . ($max != null ? ' max ="' . $max . '" '  : '') . ($min != null ? ' min ="' . $min . '" '  : '') .  ' id="' . $id . '" name="'  . $name . '" class="' . $class . '" value="' . $value . '"  ' .  ($checked  ? 'checked' : '') . ' placeholder="' . $placeholder . '"> ' . $content . '</input>';
+    return '<input type="' . $type . '" ' .  ' id="' . $id . '" name="'  . $name . '" class="' . $class . '" value="' . $value . '"  ' .  ($checked  ? 'checked' : '') . ' placeholder="' . $placeholder . '" ' . ($max != null ? ' max ="' . $max . '" '  : '') . ($min != null ? ' min ="' . $min . '" '  : '') . '> ' . $content . '</input>';
 }
 
 
@@ -93,10 +97,12 @@ function a($href, $content, $class)
 {
     return '<a href="' . $href . '" class ="' . $class . '" >' . $content . '</a>';
 }
-function ul($class , $content){
+function ul($class, $content)
+{
     return '<ul  class ="' . $class . '" >' . $content . '</ul>';
 }
-function li($class , $content){
+function li($class, $content)
+{
     return '<li  class ="' . $class . '" >' . $content . '</li>';
 }
 function meta($name, $content)
@@ -104,7 +110,7 @@ function meta($name, $content)
     return '<meta name= "' . $name . '" content="' . $content . '">';
 }
 
-function er($txt){
-    return div(class: 'er' , content:(String)$txt);
-    
+function er($txt)
+{
+    return div(class: 'er', content: (string)$txt);
 }

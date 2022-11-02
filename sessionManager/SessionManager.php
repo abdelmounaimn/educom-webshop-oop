@@ -1,4 +1,5 @@
 <?php
+include_once "models/classes/Cart.php";
 class SessionManager
 {
     public function userLogin($user)
@@ -7,6 +8,7 @@ class SessionManager
         $_SESSION['sid'] = session_id();
         $_SESSION['email'] = $user['email'];
         $_SESSION['naam'] = $user['naam'];
+        $_SESSION['id']=  $user['id'];
         $_SESSION['cart'] = array();
     }
 
@@ -19,16 +21,18 @@ class SessionManager
 
     public function isUserLoggedIn()
     {
-
+        //echo "<BR>here is session<BR>";
         return isset($_SESSION['email']);
     }
+
     public function getLoggedUserName()
     {
         return $_SESSION['naam'];
     }
+
     public function getLoggedUser()
-    {
-        return array('name' => $_SESSION['naam'], 'email' =>$_SESSION['email'] );
+    {   
+        return array('id'=>$_SESSION['id'],'name' => $_SESSION['naam'], 'email' => $_SESSION['email']);
     }
 
     public function setUpCartElement($id, $nbrOfItems = null)
@@ -41,6 +45,7 @@ class SessionManager
     {
         return $_SESSION['cart'];
     }
+
     public function resetCart()
     {
         $_SESSION['cart'] = array();

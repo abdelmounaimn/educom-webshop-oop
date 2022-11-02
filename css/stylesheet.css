@@ -70,6 +70,7 @@
 .webshop{
   width: 100%;
   display: flex;
+  padding-bottom: 10px;
   justify-content: center;
  flex-direction: row;
  flex-wrap: wrap;
@@ -203,6 +204,9 @@ form {
   background-color: rgb(215, 246, 247);
   padding: 2px 5px;
   margin: 5px;
+  height: 600px;
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
 .productInShoppingPage img {
   border: 1px solid #ddd;

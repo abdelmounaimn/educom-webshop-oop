@@ -7,10 +7,8 @@ class AboutDoc extends BasicDoc
     {
         parent::__construct($model);
     }
-
     protected function mainContent()
     {
-
         $about =
             div(
                 class: 'gegevensElement',

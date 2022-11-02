@@ -18,17 +18,16 @@ class ThinksDoc extends BasicDoc
                     class: 'gegevensElement',
                     content: div(
                         class: 'elementBlock',
-                        content:  $elemnt['name']
+                        content: $elemnt['name']
                     ) . div(
                         class: 'elementBlock',
                         content: $elemnt['value']
                     )
-                ) ;
-                
+                );
         }
         $return_str = div(
             class: 'about',
-            content:h1(content: 'We nemen Contact met U op'). $thinks
+            content: h1(content: 'We nemen Contact met U op') . $thinks
         );
         return   $return_str;
     }

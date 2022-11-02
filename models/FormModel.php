@@ -2,47 +2,48 @@
 include_once "models/UserModelClass.php";
 class FormModel extends PageModelClass
 {
-    protected $formHeader = array('value' => '', 'login' => "Loggin ", 'register' => 'Registreren', 'contact' => "Contact");
-    protected $formDescription = array('value' => '', 'login' => "vul jouw inlog gegevens in ", 'register' => 'maak een profiel', 'contact' => 'Jouw Contact gegevens : ');
-    protected $formButton = array('value' => '', 'login' => "Login ", 'register' => 'registreer', 'contact' => 'Contact');
+    protected $formHeader = array('value' => '', 'login' => "Loggin ", 'register' => 'Registreren', 'contact' => "Contact", 'about' => 'About');
+    protected $formDescription = array('value' => '', 'login' => "vul jouw inlog gegevens in ", 'register' => 'maak een profiel', 'contact' => 'Jouw Contact gegevens : ', 'about' => 'About');
+    protected $formButton = array('value' => '', 'login' => "Login ", 'register' => 'registreer', 'contact' => 'Contact', 'about' => 'About');
     protected $name = array('name' => 'name', 'value' => '', 'error' => '', 'htmlElem' => 'input', 'type' => 'text', 'regEx' => '/^[a-zA-Z-_\']{1,60}$/', 'label' => 'jouw naam');
     protected $email = array('name' => 'email', 'value' => '', 'error' => '', 'htmlElem' => 'input', 'type' => 'email', 'regEx' => '/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/', 'label' => 'jouw email');
     protected $password = array('name' => 'password', 'value' => '', 'error' => '', 'htmlElem' => 'input', 'type' => 'password', 'regEx' => '/.{2,100}/', 'label' => 'jouw wachtwoord');
     protected $password2 = array('name' => 'password2', 'value' => '', 'error' => '', 'htmlElem' => 'input', 'type' => 'password', 'regEx' => '/.{2,100}/', 'label' => 'Herhaal jouw wachtwoord');
     protected $aanhef = array('name' => 'aanhef', 'value' => '', 'error' => '', 'label' => 'Aanhef:', 'type' => 'select', 'required' => true, 'regEx' => '/dhr|mvr/', 'options' => array('dhr' => 'Dhr', 'mvr' => 'Mvr'));
-    protected $telefoon = array('name' => 'telefoon', 'value' => '', 'error' => '','htmlElem' => 'input', 'type' => 'text', 'regEx' => '/^0[1-9][0-9]{8}$|^\+[1-9][0-9][1-9][0-9]{8}$/', 'label' => 'Telefoon:','placeholder' => 'jouw telefoon');
+    protected $telefoon = array('name' => 'telefoon', 'value' => '', 'error' => '', 'htmlElem' => 'input', 'type' => 'text', 'regEx' => '/^0[1-9][0-9]{8}$|^\+[1-9][0-9][1-9][0-9]{8}$/', 'label' => 'Telefoon:', 'placeholder' => 'jouw telefoon');
     protected $communicatievoorkeur = array('name' => 'communicatievoorkeur', 'value' => '', 'error' => '', 'label' => 'wat is jouw communicatievoorkeur?', 'type' => 'radio', 'required' => true, 'options' => array('email' => 'Email', 'telefoon' => 'Telefoon'));
     protected $message = array('name' => 'message', 'value' => '', 'error' => '', 'label' => 'Laat ons weten waarover je contact wil opnemen.', 'type' => 'textarea', 'regEx' => '/^.{2,1000}$/', 'rows' => 4, 'cols' => 50);
-
     protected $formFields = array();
     protected $isValid = false;
+
     public function __construct($model)
     {
-
         parent::__construct($model);
         $this->setFormModelForPage($this->getPage());
     }
+
     public function setFormModelForPage($page)
     {
         $this->formHeader = $this->formHeader[$page];
         $this->formDescription = $this->formDescription[$page];
         $this->formButton = $this->formButton[$page];
-
         switch ($page) {
             case 'login':
-                $this->formFields = array(&$this->email, 
-                &$this->password
-            );
+                $this->formFields = array(
+                    &$this->email,
+                    &$this->password
+                );
                 break;
             case 'register':
-                $this->formFields = array(&$this->name,
-                 &$this->email, 
-                 &$this->password,
-                  &$this->password2
+                $this->formFields = array(
+                    &$this->name,
+                    &$this->email,
+                    &$this->password,
+                    &$this->password2
                 );
                 break;
             case 'contact':
-                $this->formFields=array(
+                $this->formFields = array(
                     &$this->aanhef,
                     &$this->name,
                     &$this->email,
@@ -53,13 +54,14 @@ class FormModel extends PageModelClass
             default;
         }
     }
+
     public function validateContact()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->setUpDAtaFromPost($this->formFields);
         }
     }
-    
+
     private function setupData($colnaam, $value = '', $metaData)
     {
 
@@ -76,8 +78,6 @@ class FormModel extends PageModelClass
                 $this->isValid = false;
                 $this->$colnaam['error'] = $colnaam . ' is not a valid option';
             }
-
-
             $this->$colnaam['value'] = $value;
         }
     }
@@ -90,68 +90,6 @@ class FormModel extends PageModelClass
         }
     }
 
-
-    /**
-     * Get the value of formHeader
-     */
-    public function getFormHeader()
-    {
-        return $this->formHeader;
-    }
-
-    /**
-     * Set the value of formHeader
-     *
-     * @return  self
-     */
-    public function setFormHeader($formHeader)
-    {
-        $this->formHeader = $formHeader;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of formDescription
-     */
-    public function getFormDescription()
-    {
-        return $this->formDescription;
-    }
-
-    /**
-     * Set the value of formDescription
-     *
-     * @return  self
-     */
-    public function setFormDescription($formDescription)
-    {
-        $this->formDescription = $formDescription;
-
-        return $this;
-    }
-
-
-
-    /**
-     * Get the value of formButton
-     */
-    public function getFormButton()
-    {
-        return $this->formButton;
-    }
-
-    /**
-     * Set the value of formButton
-     *
-     * @return  self
-     */
-    public function setFormButton($formButton)
-    {
-        $this->formButton = $formButton;
-
-        return $this;
-    }
     public function getIsValid()
     {
         return $this->isValid;
@@ -263,5 +201,29 @@ class FormModel extends PageModelClass
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * Get the value of formHeader
+     */
+    public function getFormHeader()
+    {
+        return $this->formHeader;
+    }
+
+    /**
+     * Get the value of formDescription
+     */
+    public function getFormDescription()
+    {
+        return $this->formDescription;
+    }
+
+    /**
+     * Get the value of formButton
+     */
+    public function getFormButton()
+    {
+        return $this->formButton;
     }
 }

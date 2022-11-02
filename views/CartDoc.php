@@ -3,23 +3,31 @@ require_once 'ProductDoc.php';
 
 class CartDoc extends ProductDoc
 {
-    public function __construct($myData)
+    public function __construct($model)
     {
-        parent::__construct($myData);
+        parent::__construct($model);
     }
 
     protected function mainContent()
     {
         $form = '';
-        return $this->showCart($this->data['cartItems'], $form);
+        $cartItems = $this->model->getSessionManager()->getCartElements();
+        return $this->showCart($cartItems, $form);
     }
     private function showCart($cartItems)
     {
+
         $totalPrice = 0;
         $items = '';
+        include_once "models/classes/Product.php";
+        include_once "models/classes/CartItem.php";
         foreach ($cartItems as $i) {
-            $totalPrice += (floatval($i['price']) *  floatval($i['nbrOfItems']));
-            $items .= $this->sowProductCntainer($i, ' ');
+            $cartItem = new CartItem();
+            $cartItem->setProductById($i['id']);
+            $cartItem->setNbrElement($i['nbrOfItems']);
+            $cartItem->setTotalPrice(floatval($cartItem->getProduct()->getPrice() *  floatval($cartItem->getNbrElement())));
+            $items .= $this->sowProductCntainer($cartItem, $i['nbrOfItems'], ' ');
+            $totalPrice+=$cartItem->getTotalPrice();
         }
         $tp = div(class: 'totalPrice', content: 'Totale Prijs = ' . $totalPrice);
         $btns = div(
@@ -32,13 +40,13 @@ class CartDoc extends ProductDoc
         return form(id: 'cart', action: 'index.php', method: 'POST', class: 'cart', content: $items . $tp . $btns);
     }
 
-    protected function sowProductCntainer($cartElemnt, $form)
+    protected function sowProductCntainer($item, $form)
     {
-        $ElementPrice = number_format(floatval($cartElemnt['price']) *  floatval($cartElemnt['nbrOfItems']), 2, '.', '');
-        $pdiv = a(class: ' cartElement', href: 'index.php?page=detail&id=' . $cartElemnt['id'], content: $this->showProduct(id: $cartElemnt['id'], name: $cartElemnt['name'], src: $cartElemnt['filename'], price: $cartElemnt['price'], description: ''));
-
+        $ElementPrice = number_format($item->getTotalPrice()  , 2, '.', '');
+        $product = $item->getProduct();
+        $pdiv = a(class: ' cartElement', href: 'index.php?page=detail&id=' . $product->getId(), content: $this->showProduct(id: $product->getId(), name: $product->getName(), src: $product->getFileName(), price: $product->getPrice(), description: ''));
         $split = div(class: 'cartSplit', content: 'X');
-        $nbrOfItems = input(type: 'number', name: $cartElemnt['id'], value: $cartElemnt['nbrOfItems'], class: 'cartNbrOfItems', min: '0', max: 99);
+        $nbrOfItems = input(type: 'number', name: $product->getId(), value: $item->getNbrElement(), class: 'cartNbrOfItems', min: '0', max: 99);
         $totaal = div(class: 'totalItem', content: '=' . $ElementPrice . ' &euro;');
         $cartEl = div(class: 'cartElement', content: $pdiv . $split . $nbrOfItems . $totaal);
         return $cartEl;

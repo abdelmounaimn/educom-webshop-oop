@@ -1,9 +1,9 @@
 <?php
-include("utils/Utils.php");
-include_once("sessionManager/SessionManager.php");
+require_once "utils/Utils.php";
+require_once "sessionManager/SessionManager.php";
+
 class PageModelClass
 {
-    public $modelname = 'PageModelClass';
     private $page = '';
     private $bodyHeader = '';
     protected $isPost = false;
@@ -12,36 +12,20 @@ class PageModelClass
     private $genericErr = '';
     protected $sessionManager;
 
-
-
-
-    public function showName()
-    {
-    }
-    public function toString()
-    {
-        return  "page = " . $this->page . '<BR>' .
-            "bodyHeader = " . $this->bodyHeader . '<BR>' .
-            "isPost = " . (string)$this->isPost . '<BR>' .
-            "genericErr = " . $this->genericErr . '<BR>' .
-            "menu = " . (string)implode($this->menu) . '<BR>' .
-            "errors = " . (string)implode($this->errors) . '<BR>';
-    }
-
     public function __construct($previousPage)
     {
-
         if (empty($previousPage)) {
-            $this->setSessionManager(new SessionManager());
-            //$this->setMenu($this->createMenu());
+            $this->sessionManager=new SessionManager();
+            //echo "<BR>pempty1<BR>";
         } else {
+            //echo "<BR>previousPage exist1<BR>";
             $this->setPage($previousPage->getPage());
             $this->setBodyHeader($previousPage->getBodyHeader());
             $this->setIsPost($previousPage->getIsPost());
             $this->setMenu($previousPage->getMenu());
             $this->setErrors($previousPage->getErrors());
             $this->setGenericErr($previousPage->getGenericErr());
-            $this->setSessionManager($previousPage->getSessionManager());
+            $this->sessionManager=$previousPage->getSessionManager();
         }
     }
 
@@ -49,7 +33,6 @@ class PageModelClass
     {
         $menu = array();
         if ($this->sessionManager->isUserLoggedIn()) {
-            
             $menu = array(
                 'HOME' => 'index.php?page=home',
                 'CONTACT' => 'index.php?page=contact',
@@ -68,16 +51,13 @@ class PageModelClass
         }
         $this->menu= $menu;
     }
+
     public function getRequestedPage()
     {
-
         $this->setIsPost(($_SERVER['REQUEST_METHOD'] == 'POST'));
-
         if ($this->getIsPost()) {
-
             $this->setPage(Util::getPostVar("page", "home"));
         } else {
-
             $this->setPage(Util::getUrlVar("page", "home"));
         }
     }
@@ -205,7 +185,7 @@ class PageModelClass
 
     /**
      * Get the value of sessionManager
-     */
+     */ 
     public function getSessionManager()
     {
         return $this->sessionManager;
@@ -215,12 +195,10 @@ class PageModelClass
      * Set the value of sessionManager
      *
      * @return  self
-     */
+     */ 
     public function setSessionManager($sessionManager)
     {
-
         $this->sessionManager = $sessionManager;
-        
 
         return $this;
     }
