@@ -8,6 +8,7 @@ class Product
     private $fileName;
     private $price;
 
+
     public function __construct()
     {
     }
@@ -21,6 +22,11 @@ class Product
         return $this;
     }
 
+    public function print()
+    {
+
+        echo "\nid = " . $this->id . " \t name = " . $this->name . " \t description = " . $this->description . " \t  filename = " . $this->filename. " \t  price = " . $this->price;
+    }
 
     public function getProductById($id)
     {

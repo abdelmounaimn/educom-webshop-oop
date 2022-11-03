@@ -5,6 +5,7 @@ class Cart
 
     private $cartItem=array();
     private $totalPrice;
+    private $id;
 
     public function __construct()
     {
@@ -73,6 +74,26 @@ class Cart
     public function setUserId($userId)
     {
         $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
 
         return $this;
     }
