@@ -8,13 +8,7 @@ class CartItem
     private $nbrElement;
     private $totalPrice=0;
     
-    public function setProductById($id)
-    {
-        $p = new Product();
-        $this->product=$p->getProductById($id);
-        return $this;
-    }
-
+    
 
     /**
      * Get the value of product

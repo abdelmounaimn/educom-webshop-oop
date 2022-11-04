@@ -24,23 +24,9 @@ class Product
     public function print()
     {
 
-        echo "\nid = " . $this->id . " \t name = " . $this->name . " \t description = " . $this->description . " \t  filename = " . $this->filename. " \t  price = " . $this->price;
+        echo "\nid = " . $this->id . " \t name = " . $this->name . " \t description = " . $this->description . " \t  filename = " . $this->fileName. " \t  price = " . $this->price;
     }
 
-    public function getProductById($id)
-    {
-        try {
-            $product = findProductById($id);
-            $this->name = $product['name'];
-            $this->id = $product['product_id'];
-            $this->description = $product['description'];
-            $this->fileName = $product['filename'];
-            $this->price = $product['price'];
-            return $this;
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-    }
 
     /**
      * Get the value of name

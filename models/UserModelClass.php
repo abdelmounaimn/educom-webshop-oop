@@ -25,6 +25,7 @@ class UserModelClass extends FormModel
 
             if ($user != null && strcmp($_POST['password'], $user->getPassword()) == 0) {
                 $this->getSessionManager()->userLogin($user);
+
             } else {
                 $this->email['error'] =  'inlog gegevens niet valid';
                 $this->isValid = false;

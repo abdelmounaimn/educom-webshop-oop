@@ -1,6 +1,8 @@
 <?php
 require_once 'ProductDoc.php';
-
+include_once "models/classes/Cart.php";
+include_once "models/classes/Product.php";
+include_once "models/classes/CartItem.php";
 class CartDoc extends ProductDoc
 {
     public function __construct($model)
@@ -11,7 +13,10 @@ class CartDoc extends ProductDoc
     protected function mainContent()
     {
         $form = '';
-        $cartItems = $this->model->getSessionManager()->getCartElements();
+        $session= $this->model->GetSessionManager();
+        $cartItems =  $session->getCart()->getCartItem();
+        echo "<BR> shopping Cart <BR>";
+        print_r($session);
         return $this->showCart($cartItems, $form);
     }
     private function showCart($cartItems)
@@ -19,16 +24,18 @@ class CartDoc extends ProductDoc
 
         $totalPrice = 0;
         $items = '';
-        include_once "models/classes/Product.php";
-        include_once "models/classes/CartItem.php";
+
         foreach ($cartItems as $i) {
             $cartItem = new CartItem();
-            $cartItem->setProductById($i['id']);
+            $shopcrud = new ShopCrud($this->model->getCrud());
+            $cartItem->setProduct($shopcrud->readProductById($i['id']));
             $cartItem->setNbrElement($i['nbrOfItems']);
             $cartItem->setTotalPrice(floatval($cartItem->getProduct()->getPrice() *  floatval($cartItem->getNbrElement())));
+           
             $items .= $this->sowProductCntainer($cartItem, $i['nbrOfItems'], ' ');
-            $totalPrice+=$cartItem->getTotalPrice();
+            $totalPrice += $cartItem->getTotalPrice();
         }
+
         $tp = div(class: 'totalPrice', content: 'Totale Prijs = ' . $totalPrice);
         $btns = div(
             class: 'cartBtns',
@@ -42,7 +49,7 @@ class CartDoc extends ProductDoc
 
     protected function sowProductCntainer($item, $form)
     {
-        $ElementPrice = number_format($item->getTotalPrice()  , 2, '.', '');
+        $ElementPrice = number_format($item->getTotalPrice(), 2, '.', '');
         $product = $item->getProduct();
         $pdiv = a(class: ' cartElement', href: 'index.php?page=detail&id=' . $product->getId(), content: $this->showProduct(id: $product->getId(), name: $product->getName(), src: $product->getFileName(), price: $product->getPrice(), description: ''));
         $split = div(class: 'cartSplit', content: 'X');

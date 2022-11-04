@@ -40,7 +40,7 @@ class PageControllerClass
                 }
                 break;
             case 'logout':
-                $this->model->getSessionManager()->do_user_logout();
+                $this->model->getSessionManager()->doUserLogOut();
                 $this->model->createMenu();
                 break;
             case 'about':
@@ -48,8 +48,8 @@ class PageControllerClass
                     include_once "models/UserModelClass.php";
                     $this->model = new UserModelClass($this->model);
                     $user = $this->model->getSessionManager()->getLoggedUser();
-                    $this->model->setNameVal($user['name']);
-                    $this->model->setEmailVal($user['email']);
+                    $this->model->setNameVal($user->getName());
+                    $this->model->setEmailVal($user->getEmail());
                 } else $this->model->setPage("home");
                 break;
             case 'register':
@@ -72,15 +72,18 @@ class PageControllerClass
             case 'webshop':
                 include_once "models/ShopModel.php";
                 $this->model = new ShopModel($this->model);
-                $this->model->getProductsFromDb();
+                $this->model->getProducts();
                 break;
             case 'cart':
-                $page = Util::validateCart();
-                break;
-            case 'detail':
-                $id = Util::addElementToCart();
                 include_once "models/ShopModel.php";
                 $this->model = new ShopModel($this->model);
+                $page = $this->model->validateCart();
+                $this->model->setPage($page);
+                break;
+            case 'detail':
+                include_once "models/ShopModel.php";
+                $this->model = new ShopModel($this->model);
+                $id = $this->model->validateDetailPage();
                 $this->model->getProductById($id);
                 break;
         }

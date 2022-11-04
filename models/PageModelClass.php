@@ -27,6 +27,7 @@ class PageModelClass
             $this->setErrors($previousPage->getErrors());
             $this->setGenericErr($previousPage->getGenericErr());
             $this->sessionManager = $previousPage->getSessionManager();
+
         }
     }
 

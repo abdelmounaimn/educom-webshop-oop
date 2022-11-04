@@ -1,20 +1,40 @@
 <?php
 include_once "models/classes/Cart.php";
+include_once "models/classes/CartItem.php";
+include_once "models/classes/Payment.php";
 include_once "models/classes/User.php";
+include_once "database/ShopCrud.php";
 class SessionManager
 {
-    public function userLogin($user = new User())
+    private $user;
+    private $cart;
+    public function __construct()
     {
+        $this->cart = new Cart();
+        $this->user=new User();
+    }
+    public function userLogin($user)
+    {
+        
+
+        $this->user=$user;
+        $this->cart= new Cart();
         if (!isset($_SESSION)) session_start();
         $_SESSION['sid'] = session_id();
         $_SESSION['email'] = $user->getEmail();
+        /*
+        $_SESSION['email'] = $user->getEmail();
         $_SESSION['naam'] = $user->getName();
-        $_SESSION['id']=  $user->getId();
-        $_SESSION['cart'] = array();
+        $_SESSION['id'] =  $user->getId();
+        $_SESSION['cart'] = new Cart();
+        */
+        
     }
 
-    public function do_user_logout()
+    public function doUserLogOut()
     {
+        $this->user= new User();
+        $this->cart= new Cart();
         if (!isset($_SESSION)) session_start();
         session_unset();
         session_destroy();
@@ -22,55 +42,69 @@ class SessionManager
 
     public function isUserLoggedIn()
     {
-        //echo "<BR>here is session<BR>";
         return isset($_SESSION['email']);
     }
 
     public function getLoggedUserName()
     {
-        return $_SESSION['naam'];
+        return $this->user->getName();
     }
 
     public function getLoggedUser()
-    {   
-        return array('id'=>$_SESSION['id'],'name' => $_SESSION['naam'], 'email' => $_SESSION['email']);
+    {
+       return $this->user;
     }
 
-    public function setUpCartElement($id, $nbrOfItems = null)
+    public function updateSissionCart($product, $nbrElement, $mode)
     {
-        $cart = $_SESSION['cart'];
-        $_SESSION['cart'] = $this->updateItemToCartArray(id: $id, cart: $cart, nbrOfItems: $nbrOfItems);
+        $cart = $this->cart;
+        $totalPrice = 0;
+        $cartItems = $cart->getCartItem();
+        $newCartItems = array();
+        $newCart = new Cart();
+        $itemNotFound = true;
+        foreach ($cartItems as $cartItem) {
+            if ($cartItem->getProduct()->getId() == $product->getId()) {
+                $itemNotFound = false;
+                if ($mode == 'inc') {
+                    $oldNbr = $cartItem->getNbrElement();
+                    $cartItem->setNbrElement($oldNbr + 1);
+                }
+                if ($nbrElement > 0 && $mode == 'set') {
+                    $cartItem->setNbrElement($nbrElement);
+                }
+
+                array_push($newCartItems, $cartItem);
+            }
+        }
+        if ($itemNotFound) {
+            $cartItem = new CartItem();
+            $cartItem->setProduct($product);
+            $cartItem->setNbrElement(1);
+            $cartItem->setTotalPrice($product->getPrice());
+            array_push($newCartItems, $cartItem);
+        }
+        foreach ($newCartItems as $cartItem){
+            $totalPrice+=($cartItem->getNbrElement() * $cartItem->getProduct()->getPrice());
+        }
+        
+
+        $newCart->setTotalPrice($totalPrice);
+        $newCart->setCartItem($newCartItems);
+        $this->cart= $newCart;
+        echo "<BR> session <BR>";
+        print_r($this);
     }
 
-    public function getCartElements()
+      public function getCart()
     {
-        return $_SESSION['cart'];
+        return $this->cart;
+
     }
 
     public function resetCart()
     {
-        $_SESSION['cart'] = array();
+        $this->cart= new Cart();
     }
 
-    public function updateItemToCartArray($id, $cart, $nbrOfItems = null)
-    {
-
-        $idExist = false;
-        $result = array_map(
-            function ($el) use ($id, $nbrOfItems, &$idExist) {
-                if ($id == $el['id']) {
-                    $idExist = true;
-                    $nbr = ($nbrOfItems == null ? $el['nbrOfItems'] + 1 : $nbrOfItems);
-
-                    return array('id' => $id, 'nbrOfItems' => $nbr);
-                } else return $el;
-            },
-            $cart
-        );
-        if (!$idExist) array_push($result, array('id' => $id, 'nbrOfItems' =>  1));
-        $result = array_filter($result, function ($e) {
-            return $e['nbrOfItems'] == 0 ? false : true;
-        });
-        return $result;
-    }
 }
