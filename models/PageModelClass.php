@@ -16,6 +16,7 @@ class PageModelClass
     public function __construct($previousPage, $crud)
     {
         if (empty($previousPage)) {
+            
             $this->sessionManager = new SessionManager();
             $this->crud = $crud;
         } else {
@@ -27,8 +28,8 @@ class PageModelClass
             $this->setErrors($previousPage->getErrors());
             $this->setGenericErr($previousPage->getGenericErr());
             $this->sessionManager = $previousPage->getSessionManager();
-
         }
+       
     }
 
     public function createMenu()

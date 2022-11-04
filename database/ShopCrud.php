@@ -84,7 +84,7 @@ class ShopCrud
     public function createOrder($cart, $checkout, $totalPrice)
     {
         $cartItems = $cart->getCartItem();
-        $userId = $cart->getUserId();
+        $userId = $cart->getUser();
         //create Cart for the User
         $cartId = $this->createCart(cartItems: $cartItems, user: $userId);
         // add Order to the DB

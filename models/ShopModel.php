@@ -6,6 +6,7 @@ include_once "utils/Utils.php";
 class ShopModel extends PageModelClass
 {
     private $products = array();
+    private $product;
     private $cart;
     private $payment;
     public function __construct($model)
@@ -16,7 +17,7 @@ class ShopModel extends PageModelClass
     {
         try {
             $shopCrud = new ShopCrud($this->getCrud());
-            return $shopCrud->readProductById($id);
+            $this->product= $shopCrud->readProductById($id);
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -43,7 +44,8 @@ class ShopModel extends PageModelClass
             $session->updateSissionCart(product: $product, nbrElement: 1, mode: 'inc');
             return $_POST['id'];
         } 
-        else return Util::getUrlVar("id", 0);
+        else {
+            return Util::getUrlVar("id", 0);}
     }
 
     public function validateCart()
@@ -55,7 +57,7 @@ class ShopModel extends PageModelClass
                 case 'Setting':
                     foreach ($_POST as $key => $val) {
                         if (is_int($key)) {
-                            $shopCrud = new ShopCrud($this->model->getCrud());
+                            $shopCrud = new ShopCrud($this->getCrud());
                             $product = $shopCrud->readProductById($key);
                             $session->updateSissionCart(product: $product, nbrElement: $val, mode: 'set');
                         }
@@ -65,18 +67,19 @@ class ShopModel extends PageModelClass
                 case 'Order':
                     foreach ($_POST as $key => $val) {
                         if (is_int($key)) {
-                            $shopCrud = new ShopCrud($this->model->getCrud());
+                            $shopCrud = new ShopCrud($this->getCrud());
                             $product = $shopCrud->readProductById($key);
                             $session->updateSissionCart(product: $product, nbrElement: $val, mode: 'set');
                         }
                     }
-                    $user = $session->getLoggedUser();
+                    $user = $session->getUser();
                     $cart = $session->getCart();
+                    $cart->setUser($user->getId());
                     include_once "models/classes/Payment.php";
                     $payment = new Payment();
                     $payment->setCart($cart);
-                    $payment->setUserId($user['id']);
-                    $shopCrud = new ShopCrud($this->model->getCrud());
+                    $payment->setUserId($user->getId());
+                    $shopCrud = new ShopCrud($this->getCrud());
                     $shopCrud->createOrder($cart, 0, $cart->getTotalPrice());
                     $session->resetCart();
                     return 'payment';
@@ -86,5 +89,25 @@ class ShopModel extends PageModelClass
         else{
             return 'cart';
         }
+    }
+
+    /**
+     * Get the value of product
+     */ 
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * Set the value of product
+     *
+     * @return  self
+     */ 
+    public function setProduct($product)
+    {
+        $this->product = $product;
+
+        return $this;
     }
 }

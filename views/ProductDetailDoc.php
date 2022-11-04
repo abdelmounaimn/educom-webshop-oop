@@ -3,13 +3,12 @@ require_once 'ProductDoc.php';
 
 class ProductDetailDoc extends ProductDoc
 {
-    private $product=null;
+    private $product = null;
     public function __construct($model)
     {
-       
-        parent::__construct($model);
-        $this->product=$this->model->getProducts()[0];
 
+        parent::__construct($model);
+        $this->product = $this->model->getProduct();
     }
 
     protected function mainContent()
@@ -22,7 +21,7 @@ class ProductDetailDoc extends ProductDoc
     {
 
         $id = $p->getId();
-        $name = $p->getName();        
+        $name = $p->getName();
         $description = $p->getDescription();
         $src = $p->getFileName();;
         $price = $p->getPrice();
@@ -32,7 +31,7 @@ class ProductDetailDoc extends ProductDoc
     private function generateForm($id)
     {
         $hiddenInput = input(type: 'hidden', value: $id, name: 'id') .
-         input(type: 'hidden', value: 'detail', name: 'page');
+            input(type: 'hidden', value: 'detail', name: 'page');
         $submit = input(type: 'submit', value: 'Add', class: 'cartButton', name: 'submit');
         $form = form(id: '', action: 'index.php?page=detail&id=' . $id, method: 'POST', content: $hiddenInput . $submit);
         return $form;

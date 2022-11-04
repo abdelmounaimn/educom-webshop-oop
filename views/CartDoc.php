@@ -15,8 +15,6 @@ class CartDoc extends ProductDoc
         $form = '';
         $session= $this->model->GetSessionManager();
         $cartItems =  $session->getCart()->getCartItem();
-        echo "<BR> shopping Cart <BR>";
-        print_r($session);
         return $this->showCart($cartItems, $form);
     }
     private function showCart($cartItems)
@@ -26,15 +24,10 @@ class CartDoc extends ProductDoc
         $items = '';
 
         foreach ($cartItems as $i) {
-            $cartItem = new CartItem();
-            $shopcrud = new ShopCrud($this->model->getCrud());
-            $cartItem->setProduct($shopcrud->readProductById($i['id']));
-            $cartItem->setNbrElement($i['nbrOfItems']);
-            $cartItem->setTotalPrice(floatval($cartItem->getProduct()->getPrice() *  floatval($cartItem->getNbrElement())));
-           
-            $items .= $this->sowProductCntainer($cartItem, $i['nbrOfItems'], ' ');
-            $totalPrice += $cartItem->getTotalPrice();
+            $items .= $this->sowProductCntainer($i, $i->getTotalPrice(), ' ');
         }
+        $session= $this->model->GetSessionManager();
+        $totalPrice=$session->getCart()->getTotalPrice();
 
         $tp = div(class: 'totalPrice', content: 'Totale Prijs = ' . $totalPrice);
         $btns = div(

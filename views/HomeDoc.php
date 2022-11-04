@@ -9,11 +9,12 @@
 
         protected function mainContent() 
         {
-            echo "home";
-            print_r($this->model->getSessionManager());
-            
-           return "<p>Welkom <strong> " . ($this->model->getSessionManager()->isUserLoggedIn()?$this->model->getSessionManager()->getLoggedUserName():'') . 
-            " </strong>in de home pagina </p>"; 
+            if($this->model->getSessionManager()->isUserLoggedIn()) $this->model->getSessionManager()->getUser()->print();
+            return "<p>Welkom <strong> " . ($this->model->getSessionManager()->isUserLoggedIn()?$this->model->getSessionManager()->getLoggedUserName():'') . 
+            " </strong>in de home pagina </p>";
+            /*
+           
+            */
             
         }
     }
