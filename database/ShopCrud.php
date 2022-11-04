@@ -8,9 +8,9 @@ include_once "models/classes/Product.php";
 class ShopCrud
 {
     private $crud;
-    public function __construct()
+    public function __construct($crud)
     {
-        $this->crud = new Crud();
+        $this->crud = $crud;
     }
     public function readAllProducts()
     {
@@ -43,10 +43,9 @@ class ShopCrud
         $sql = "INSERT INTO carts(user) VALUES( :user)";
         $params['user'] = $user;
         $cartId = $this->crud->createOne(sql: $sql, params: $params);
-        
+
         //Add Cart Itens For de Cart
         if ($cartId >= 1) foreach ($cartItems as $cartItem) {
-            $this->crud = new Crud();
             $this->createCartItem(cart: $cartId, nbrOfElement: $cartItem->getNbrElement(), product: $cartItem->getProduct()->getId());
         }
         return $cartId >= 1 ? $cartId : false;
@@ -63,13 +62,13 @@ class ShopCrud
 
     public function createCartItem($cart, $nbrOfElement, $product)
     {
-        
+
         $sql = "INSERT INTO cart_items(cart,nbrElement,product) VALUES( :cart , :nbrElement, :product)";
         $params['cart'] = $cart;
         $params['nbrElement'] = $nbrOfElement;
         $params['product'] = $product;
         $cartItenId = $this->crud->createOne(sql: $sql, params: $params);
-        
+
         return $cartItenId >= 1 ? $cartItenId : false;
     }
 
@@ -87,14 +86,12 @@ class ShopCrud
         $cartItems = $cart->getCartItem();
         $userId = $cart->getUserId();
         //create Cart for the User
-        $this->crud = new Crud();
-        $cartId = $this->createCart(cartItems:$cartItems,user: $userId);
+        $cartId = $this->createCart(cartItems: $cartItems, user: $userId);
         // add Order to the DB
         $sql = "INSERT INTO payments(cart,checkout,totalPrice) VALUES( :cart , :checkout, :totalPrice)";
         $params['cart'] = $cartId;
         $params['checkout'] = $checkout;
         $params['totalPrice'] = $totalPrice;
-        $this->crud = new Crud();
         $user_id = $this->crud->createOne(sql: $sql, params: $params);
         return $user_id >= 1 ? $user_id : false;
     }

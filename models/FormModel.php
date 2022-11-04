@@ -18,7 +18,7 @@ class FormModel extends PageModelClass
 
     public function __construct($model)
     {
-        parent::__construct($model);
+        parent::__construct($model, $model->getCrud());
         $this->setFormModelForPage($this->getPage());
     }
 

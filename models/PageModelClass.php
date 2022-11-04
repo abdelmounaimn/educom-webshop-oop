@@ -11,21 +11,22 @@ class PageModelClass
     private $errors = array();
     private $genericErr = '';
     protected $sessionManager;
+    protected $crud;
 
-    public function __construct($previousPage)
+    public function __construct($previousPage, $crud)
     {
         if (empty($previousPage)) {
-            $this->sessionManager=new SessionManager();
-            //echo "<BR>pempty1<BR>";
+            $this->sessionManager = new SessionManager();
+            $this->crud = $crud;
         } else {
-            //echo "<BR>previousPage exist1<BR>";
+            $this->crud = $previousPage->crud;
             $this->setPage($previousPage->getPage());
             $this->setBodyHeader($previousPage->getBodyHeader());
             $this->setIsPost($previousPage->getIsPost());
             $this->setMenu($previousPage->getMenu());
             $this->setErrors($previousPage->getErrors());
             $this->setGenericErr($previousPage->getGenericErr());
-            $this->sessionManager=$previousPage->getSessionManager();
+            $this->sessionManager = $previousPage->getSessionManager();
         }
     }
 
@@ -49,7 +50,7 @@ class PageModelClass
                 'LOGIN' => 'index.php?page=login'
             );
         }
-        $this->menu= $menu;
+        $this->menu = $menu;
     }
 
     public function getRequestedPage()
@@ -185,7 +186,7 @@ class PageModelClass
 
     /**
      * Get the value of sessionManager
-     */ 
+     */
     public function getSessionManager()
     {
         return $this->sessionManager;
@@ -195,10 +196,30 @@ class PageModelClass
      * Set the value of sessionManager
      *
      * @return  self
-     */ 
+     */
     public function setSessionManager($sessionManager)
     {
         $this->sessionManager = $sessionManager;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of crud
+     */
+    public function getCrud()
+    {
+        return $this->crud;
+    }
+
+    /**
+     * Set the value of crud
+     *
+     * @return  self
+     */
+    public function setCrud($crud)
+    {
+        $this->crud = $crud;
 
         return $this;
     }

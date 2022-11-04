@@ -1,14 +1,15 @@
 <?php
 include_once "models/classes/Cart.php";
+include_once "models/classes/User.php";
 class SessionManager
 {
-    public function userLogin($user)
+    public function userLogin($user = new User())
     {
         if (!isset($_SESSION)) session_start();
         $_SESSION['sid'] = session_id();
-        $_SESSION['email'] = $user['email'];
-        $_SESSION['naam'] = $user['naam'];
-        $_SESSION['id']=  $user['id'];
+        $_SESSION['email'] = $user->getEmail();
+        $_SESSION['naam'] = $user->getName();
+        $_SESSION['id']=  $user->getId();
         $_SESSION['cart'] = array();
     }
 

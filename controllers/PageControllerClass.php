@@ -1,12 +1,13 @@
 <?php
 require_once("models/PageModelClass.php");
 require_once "utils/Utils.php";
+
 class PageControllerClass
 {
     protected $model;
-    public function __construct()
+    public function __construct($model)
     {
-        $this->model = new PageModelClass(NULL);
+        $this->model = $model;
     }
 
     public function handleRequest()
@@ -29,6 +30,7 @@ class PageControllerClass
         switch ($this->model->getPage()) {
             case 'login':
                 include_once "models/UserModelClass.php";
+                $crud = new UserCrud($this->model->getCrud());
                 $this->model = new UserModelClass($this->model);
                 $this->model->validateLogin();
                 if ($this->model->getIsValid()) {

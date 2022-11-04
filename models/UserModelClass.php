@@ -1,9 +1,14 @@
 <?php
 include_once "models/FormModel.php";
-include_once "database/database_repository.php";
+include_once "database/UserCrud.php";
+require_once "models/classes/User.php";
+
 class UserModelClass extends FormModel
 {
-    private $id;
+    private $user;
+    // dat kan vraag zijn 
+    // ik kan geen geen model van maken om dat geen leeg constructor kan maken
+
     public function __construct($Model)
     {
         parent::__construct($Model);
@@ -15,8 +20,10 @@ class UserModelClass extends FormModel
             $this->setUpDAtaFromPost(array($this->email, $this->password));
         }
         if ($this->isValid) {
-            $user = $this->findUserByEmail($this->email['value']);
-            if ($user != null && strcmp($_POST['password'], $user['wachtwoord']) == 0) {
+            $userCrud = new UserCrud($this->crud);
+            $user = $userCrud->readUserByEmail($this->email['value']);
+
+            if ($user != null && strcmp($_POST['password'], $user->getPassword()) == 0) {
                 $this->getSessionManager()->userLogin($user);
             } else {
                 $this->email['error'] =  'inlog gegevens niet valid';
@@ -33,12 +40,21 @@ class UserModelClass extends FormModel
             $this->setUpDAtaFromPost($this->formFields);
         }
         if ($this->isValid) {
-            $user = $this->findUserByEmail($this->email['value']);
+            $userCrud = new UserCrud($this->crud);
+            
+            $user = $userCrud->readUserByEmail($this->email['value']);
             if ($user != null) {
                 $this->email['error'] =  'probeer ander email!!';
                 $this->isValid = false;
             } else {
-                $this->saveUser();
+                $user = new User();
+                $user->setUser(name: $this->name['value'], email: $this->email['value'], password: $this->password['value']);
+                try{
+                    $userCrud->createUser($user);
+                }catch(Exception $e){
+                    echo $e->getMessage();
+                }
+                
             }
         } else {
         }
@@ -46,7 +62,12 @@ class UserModelClass extends FormModel
 
     private function saveUser()
     {
-        saveUser(array('name' => $this->name['value'], 'email' => $this->email['value'], 'password' => $this->password['value']));
+
+        $userCrud = new UserCrud($this->model->getCrud());
+        $user = new User();
+        $user->setUser(name: $this->name['value'], email: $this->email['value'], password: $this->password['value']);
+        $userCrud->createUser($user);
+        //saveUser(array('name' => $this->name['value'], 'email' => $this->email['value'], 'password' => $this->password['value']));
     }
 
     private function findUserByEmail($email)

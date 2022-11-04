@@ -8,7 +8,6 @@ class Product
     private $fileName;
     private $price;
 
-
     public function __construct()
     {
     }
